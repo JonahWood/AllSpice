@@ -66,7 +66,6 @@ namespace AllSpice.Repositories
             int rows = _db.Execute(sql, new {recipeId});
         }
 
-        // FIXME this edit does not work
 
         internal int Update(Recipe original)
         {

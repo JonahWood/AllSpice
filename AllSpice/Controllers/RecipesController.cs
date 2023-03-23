@@ -60,7 +60,6 @@ namespace AllSpice.Controllers
             return BadRequest(e.Message);
             }
         }
-        // FIXME this edit does not work
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult<Recipe>> Update(int id, [FromBody] Recipe updateData)

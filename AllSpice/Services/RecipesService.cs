@@ -44,7 +44,6 @@ namespace AllSpice.Services
             return recipe;
         }
 
-        // FIXME this edit does not work
 
         internal Recipe Update(Recipe updateData, string userId, int id)
         {
