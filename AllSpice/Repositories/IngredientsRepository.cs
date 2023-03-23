@@ -22,5 +22,17 @@ namespace AllSpice.Repositories
             data.Id = id;
             return data;
         }
+
+        internal List<Ingredient> GetIngredientsByRecipe(int id)
+        {
+            string sql = @"
+        SELECT 
+        *
+        FROM ingredients
+        Where recipeId = @id;
+        ";
+        List<Ingredient> ingredients = _db.Query<Ingredient>(sql, new {id}).ToList();
+        return ingredients;
+        }
     }
 }

@@ -35,6 +35,10 @@ VALUES
 ('Bacon', 80, 1);
 DROP TABLE recipes;
 
+        SELECT 
+        *
+        FROM ingredients
+        Where recipeId = 1;
 DELETE from recipes
             WHERE recipe.id = 1;
 

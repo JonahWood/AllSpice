@@ -90,5 +90,20 @@ namespace AllSpice.Controllers
           return BadRequest(e.Message);
         }
     }
+
+    [HttpGet("{id}/ingredients")]
+    public async Task<ActionResult<List<Ingredient>>> GetIngredientsByRecipe(int id)
+    {
+        try 
+        {
+          Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+          List<Ingredient> ingredients = _recipesService.GetIngredientsByRecipe(id);
+          return Ok(ingredients);
+        }
+        catch (Exception e)
+        {
+          return BadRequest(e.Message);
+        }
+    }
     }
 }
