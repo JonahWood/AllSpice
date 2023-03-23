@@ -70,17 +70,17 @@ namespace AllSpice.Repositories
 
         internal int Update(Recipe original)
         {
-            string sql = @"
-            UPDATE recipes
-            SET
-            title = @title,
-            instructions = @instructions,
-            img = @img,
-            category = @ category
-            WHERE id = @id;
-            ";
-            int rows = _db.Execute(sql, original);
-            return rows;
+                string sql = @"
+    UPDATE recipes
+      SET
+      title = @title,
+      instructions= @instructions,
+      img= @img,
+      category = @category
+    WHERE id = @id;
+      ";
+    int rows = _db.Execute(sql, original);
+    return rows;
         }
     }
 }

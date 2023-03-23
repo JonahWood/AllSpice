@@ -46,9 +46,10 @@ namespace AllSpice.Services
 
         // FIXME this edit does not work
 
-        internal Recipe Update(Recipe updateData)
+        internal Recipe Update(Recipe updateData, string userId, int id)
         {
-            Recipe original = this.FindById(updateData.Id);
+            Recipe original = this.FindById(id);
+            if (original.CreatorId != userId) throw new Exception("no bueno my friend, get your own recipe");
             original.Title = updateData.Title != null ? updateData.Title : original.Title;
             original.Instructions = updateData.Instructions != null ? updateData.Instructions : original.Instructions;
             original.Img = updateData.Img != null ? updateData.Img : original.Img;

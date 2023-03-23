@@ -62,12 +62,15 @@ namespace AllSpice.Controllers
         }
         // FIXME this edit does not work
         [HttpPut("{id}")]
-        public ActionResult<Recipe> Update(int id, [FromBody] Recipe updateData)
+        [Authorize]
+        public async Task<ActionResult<Recipe>> Update(int id, [FromBody] Recipe updateData)
         {
             try 
             {
+              Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+
             updateData.Id = id;
-            Recipe recipe = _recipesService.Update(updateData);
+            Recipe recipe = _recipesService.Update(updateData, userInfo?.Id, id);
             return Ok(recipe);
             }
             catch (Exception e)
