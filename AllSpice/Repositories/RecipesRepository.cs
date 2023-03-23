@@ -71,13 +71,13 @@ namespace AllSpice.Repositories
         {
                 string sql = @"
     UPDATE recipes
-      SET
-      title = @title,
-      instructions= @instructions,
-      img= @img,
-      category = @category
-    WHERE id = @id;
-      ";
+        SET
+        title = @title,
+        instructions= @instructions,
+        img= @img,
+        category = @category
+        WHERE id = @id;
+        ";
     int rows = _db.Execute(sql, original);
     return rows;
         }
