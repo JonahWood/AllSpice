@@ -27,6 +27,14 @@ namespace AllSpice.Services
             return recipe;
         }
 
+        internal Recipe removeRecipe(int id, string userId)
+        {
+            Recipe recipe = this.FindById(id);
+            if(recipe.CreatorId != userId) throw new Exception("This is not your grandmamas recipe you scoundrel");
+            _repo.removeRecipe(recipe.Id);
+            return recipe;
+        }
+
         // FIXME this edit does not work
 
         internal Recipe Update(Recipe updateData)

@@ -19,7 +19,24 @@ CREATE TABLE recipes(
   FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
 
+CREATE TABLE ingredients(
+id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+quantity VARCHAR(50) NOT NULL,
+recipeId INT NOT NULL,
+
+FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE
+) default charset utf8 COMMENT '';
+
+DROP TABLE ingredients;
+INSERT INTO ingredients
+(name, quantity, recipeId)
+VALUES
+('Bacon', 80, 1);
 DROP TABLE recipes;
+
+DELETE from recipes
+            WHERE recipe.id = 1;
 
 INSERT INTO recipes
 (title, instructions, img, category, creatorId)

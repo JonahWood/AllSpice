@@ -57,6 +57,15 @@ namespace AllSpice.Repositories
             return recipe;
         }
 
+        internal void removeRecipe(int recipeId)
+        {
+            string sql = @"
+            DELETE from recipes
+            WHERE recipes.id = @recipeId;
+            ";
+            int rows = _db.Execute(sql, new {recipeId});
+        }
+
         // FIXME this edit does not work
 
         internal int Update(Recipe original)

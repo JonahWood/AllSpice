@@ -8,9 +8,12 @@ namespace AllSpice.Controllers
 
         private readonly Auth0Provider _auth;
 
-        public RecipeController(RecipesService recipesService, Auth0Provider auth){
+        private readonly IngredientsService _ingredientsService;
+
+        public RecipeController(RecipesService recipesService, Auth0Provider auth, IngredientsService ingredientsService){
             _recipesService = recipesService;
             _auth = auth;
+            _ingredientsService = ingredientsService;
         }
 
         [HttpPost]
@@ -73,5 +76,19 @@ namespace AllSpice.Controllers
             }
         }
         
+    [HttpDelete("{id}")]
+    [Authorize]
+    async public Task<ActionResult<Recipe>> removeRecipe(int id){
+        try 
+        {
+          Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+          Recipe recipe = _recipesService.removeRecipe(id,userInfo.Id);
+          return Ok(recipe);
+        }
+        catch (Exception e)
+        {
+          return BadRequest(e.Message);
+        }
+    }
     }
 }
