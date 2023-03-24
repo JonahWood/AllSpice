@@ -10,4 +10,9 @@ namespace AllSpice.Models
         public string Category { get; set; }
         public Profile Creator {get; set;}
     }
+    
+public class FavoriteRecipe : Recipe
+{
+public int favoriteId { get; set; }
+}
 }

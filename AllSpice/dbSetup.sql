@@ -28,6 +28,15 @@ recipeId INT NOT NULL,
 FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
 
+CREATE TABLE favorites(
+  id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  accountId VARCHAR(255) NOT NULL,
+  recipeId INT NOT NULL,
+
+  FOREIGN KEY (accountId) REFERENCES accounts(id) ON DELETE CASCADE,
+  FOREIGN KEY (recipeId) REFERENCES recipes(id) ON DELETE CASCADE
+) default charset utf8 COMMENT '';
+
 DROP TABLE ingredients;
 INSERT INTO ingredients
 (name, quantity, recipeId)
@@ -41,6 +50,12 @@ DROP TABLE recipes;
         Where recipeId = 1;
 DELETE from recipes
             WHERE recipe.id = 1;
+
+                        INSERT INTO favorites
+            (recipeId, accountId)
+            VALUES
+            (1, '64013315bd1dde3ace531c41');
+            SELECT LAST_INSERT_ID();
 
 INSERT INTO recipes
 (title, instructions, img, category, creatorId)
