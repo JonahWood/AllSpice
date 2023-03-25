@@ -15,6 +15,16 @@ async getAllRecipes(){
 async createRecipe(){
     logger.log('create recipe')
 }
+
+async setActiveRecipe(id){
+    const res = await api.get('api/recipes/' + id)
+    AppState.activeRecipe = res.data;
+    await this.getIngredients(id)
+}
+async getIngredients(id) {
+    const res = await api.get('api/recipes/' + id + "/ingredients");
+    AppState.activeIngredients = res.data;
+}
 }
 
 export const recipesService = new RecipesService
