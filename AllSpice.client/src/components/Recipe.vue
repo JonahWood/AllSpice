@@ -1,7 +1,7 @@
 <template>
     <img class="selectable" :src="recipe.img" alt="">
     <h5 class=""><span class="selectable recipe-title">{{ recipe.title }} - [{{ recipe.category
-    }}]</span>&nbsp;&nbsp;&nbsp;<i class="mdi mdi-heart-outline"></i></h5>
+    }}]</span>&nbsp;&nbsp;&nbsp;<i v-if="account" class="mdi mdi-heart-outline"></i></h5>
 </template>
 
 
