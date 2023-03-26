@@ -2,6 +2,7 @@
   <nav class="navbar navbar-expand-lg px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
+        <img class="good-hands" src="https://logos-world.net/wp-content/uploads/2021/08/Allstate-Logo.png" alt="">
       </div>
     </router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -33,6 +34,10 @@ export default {
 </script>
 
 <style scoped>
+.good-hands {
+  max-height: 8vh;
+}
+
 a:hover {
   text-decoration: none;
 }

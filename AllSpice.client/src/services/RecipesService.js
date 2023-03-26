@@ -24,6 +24,7 @@ async setActiveRecipe(id){
 async getIngredients(id) {
     const res = await api.get('api/recipes/' + id + "/ingredients");
     AppState.activeIngredients = res.data;
+    logger.log('ingredients', AppState.activeIngredients)
 }
 }
 

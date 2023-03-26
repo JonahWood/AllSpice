@@ -24,6 +24,14 @@
                             <div class="row">
                                 <div class="col-6 bg-light py-1">
                                     <div class="minor-headers d-flex justify-content-center rounded">
+                                        <h3 class="p-2 text-light">INGREDIENTS</h3>
+                                    </div>
+                                    <h6 class="px-2" v-for="i in ingredients">
+                                        <Ingredient :ingredient="i" />
+                                    </h6>
+                                </div>
+                                <div class="col-6 bg-light py-1">
+                                    <div class="minor-headers d-flex justify-content-center rounded">
                                         <h3 class="p-2 text-light">STEPS</h3>
                                     </div>
                                     <h6 class="px-2">{{ activeRecipe?.instructions }}</h6>
@@ -50,6 +58,7 @@ import { AppState } from '../AppState';
 import Pop from '../utils/Pop';
 import { logger } from '../utils/Logger';
 import { recipesService } from '../services/RecipesService';
+import Ingredient from './Ingredient.vue';
 
 
 export default {
@@ -57,7 +66,7 @@ export default {
         recipe: { type: Recipe, required: true }
     },
     setup() {
-        const ingredientData = new ref({})
+        const ingredientData = new ref({});
         return {
             account: computed(() => AppState.account),
             activeRecipe: computed(() => AppState.activeRecipe),
@@ -65,15 +74,24 @@ export default {
             ingredients: computed(() => AppState.activeIngredients),
             async setActiveRecipe(id) {
                 try {
-                    recipesService.setActiveRecipe(id)
+                    recipesService.setActiveRecipe(id);
                 }
                 catch (error) {
-                    Pop.error(error.message)
-                    logger.error(error)
+                    Pop.error(error.message);
+                    logger.error(error);
+                }
+            },
+            async getIngredientsByRecipeId() {
+                try {
+                }
+                catch (error) {
+                    Pop.error(error.message);
+                    logger.error(error);
                 }
             }
-        }
-    }
+        };
+    },
+    components: { Ingredient, Ingredient, Ingredient }
 }
 </script>
 
