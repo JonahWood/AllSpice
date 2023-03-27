@@ -42,8 +42,23 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning"
-                        v-if="account.id == activeRecipe?.creator.id">Edit</button>
+                        v-if="(account.id == activeRecipe?.creator.id) && (!editMode)"
+                        @click="editRecipeMode()">Edit</button>
+                    <button type="button" class="btn btn-secondary"
+                        v-if="(account.id == activeRecipe?.creator.id) && (editMode)"
+                        @click="editRecipeMode()">Cancel</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
+
+                <div v-if="editMode" class="modal-footer">
+                    <form @submit.prevent="editRecipe(activeRecipe?.id)">
+                        <label for="name">Name</label>
+                        <input required v-model="editable.name" type="text" class="form-control" id="name"
+                            placeholder="Name">
+
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -59,6 +74,7 @@ import Pop from '../utils/Pop';
 import { logger } from '../utils/Logger';
 import { recipesService } from '../services/RecipesService';
 import Ingredient from './Ingredient.vue';
+import { ingredientsService } from '../services/IngredientsService';
 
 
 export default {
@@ -66,11 +82,14 @@ export default {
         recipe: { type: Recipe, required: true }
     },
     setup() {
-        const ingredientData = new ref({});
+        const editable = new ref({})
+        const ingredientData = new ref({})
         return {
             account: computed(() => AppState.account),
             activeRecipe: computed(() => AppState.activeRecipe),
+            editMode: computed(() => AppState.editMode),
             ingredientData,
+            editable,
             ingredients: computed(() => AppState.activeIngredients),
             async setActiveRecipe(id) {
                 try {
@@ -87,6 +106,29 @@ export default {
                 catch (error) {
                     Pop.error(error.message);
                     logger.error(error);
+                }
+            },
+            editRecipeMode() {
+                AppState.editMode = !AppState.editMode
+            },
+            async addIngredient(recipeId) {
+                try {
+                    await ingredientsService.addIngredient(recipeId)
+                    Pop.success('Ingredient added!')
+                }
+                catch (error) {
+                    Pop.error(error.message)
+                    logger.error(error)
+                }
+            },
+            async editRecipe(recipeId) {
+                try {
+
+                    AppState.editMode = false
+                }
+                catch (error) {
+                    Pop.error(error.message)
+                    logger.error(error)
                 }
             }
         };

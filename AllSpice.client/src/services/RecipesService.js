@@ -26,6 +26,7 @@ async getIngredients(id) {
     AppState.activeIngredients = res.data;
     logger.log('ingredients', AppState.activeIngredients)
 }
+
 }
 
 export const recipesService = new RecipesService
