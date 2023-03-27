@@ -26,6 +26,10 @@ async getIngredients(id) {
     AppState.activeIngredients = res.data;
     logger.log('ingredients', AppState.activeIngredients)
 }
+async updateRecipe(updateData){
+    const res = await api.put('api/recipes', updateData)
+    AppState.activeRecipe = res.data
+}
 
 }
 

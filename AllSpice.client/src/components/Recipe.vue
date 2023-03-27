@@ -52,7 +52,7 @@
 
 
                 <div v-if="editMode" class="modal-footer">
-                    <form @submit.prevent="editRecipe(activeRecipe?.id)">
+                    <form @submit.prevent="editRecipe()">
                         <label for="name">Name</label>
                         <input required v-model="editable.name" type="text" class="form-control" id="name"
                             placeholder="Name">
@@ -121,9 +121,9 @@ export default {
                     logger.error(error)
                 }
             },
-            async editRecipe(recipeId) {
+            async editRecipe() {
                 try {
-
+                    await recipesService.updateRecipe(editable.value)
                     AppState.editMode = false
                 }
                 catch (error) {
