@@ -13,7 +13,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ activeRecipe?.title }}</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button @click="editRecipeModeFalse()" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body container-fluid">
                     <div class="row">
@@ -48,15 +49,18 @@
                     <button type="button" class="btn btn-secondary"
                         v-if="(account.id == activeRecipe?.creator.id) && (editMode)"
                         @click="editRecipeMode()">Cancel</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button @click="editRecipeModeFalse()" type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
                 </div>
 
                 <!-- SECTION [EDIT MODE] footer -->
-                <div v-if="editMode" class="modal-footer">
+                <div v-if="editMode" class="modal-footer d-flex justify-content-start">
                     <form @submit.prevent="editRecipe()">
-                        <label for="name">Name</label>
-                        <input required v-model="editable.name" type="text" class="form-control" id="name"
-                            placeholder="Name">
+                        <div class="mb-2">
+                            <label for="title">Title</label>
+                            <input required v-model="editable.title" type="text" class="form-control" id="title"
+                                :placeholder="activeRecipe?.title">
+                        </div>
 
                         <button type="submit" class="btn btn-success">Save</button>
                     </form>
@@ -69,7 +73,7 @@
 
 <script>
 import { Recipe } from '../models/Recipe';
-import { computed, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 import { AppState } from '../AppState';
 import Pop from '../utils/Pop';
 import { logger } from '../utils/Logger';
@@ -83,8 +87,20 @@ export default {
         recipe: { type: Recipe, required: true }
     },
     setup() {
-        const editable = new ref({})
-        const ingredientData = new ref({})
+        const editable = ref({})
+        const ingredientData = ref({})
+        onUnmounted(() => {
+            nullified()
+        })
+        function nullified() {
+            try {
+                AppState.activeRecipe = null
+            }
+            catch (error) {
+                Pop.error(error.message)
+                logger.error(error)
+            }
+        }
         return {
             account: computed(() => AppState.account),
             activeRecipe: computed(() => AppState.activeRecipe),
@@ -112,6 +128,9 @@ export default {
             editRecipeMode() {
                 AppState.editMode = !AppState.editMode
             },
+            editRecipeModeFalse() {
+                AppState.editMode = false
+            },
             async addIngredient(recipeId) {
                 try {
                     await ingredientsService.addIngredient(recipeId)
@@ -124,7 +143,9 @@ export default {
             },
             async editRecipe() {
                 try {
-                    await recipesService.updateRecipe(editable.value)
+                    const formData = editable.value
+                    AppState.activeRecipe = recipe
+                    await recipesService.updateRecipe(formData, recipe.id)
                     AppState.editMode = false
                 }
                 catch (error) {

@@ -41,8 +41,18 @@ export default {
         logger.error(error);
       }
     }
+    function nullified() {
+      try {
+        AppState.activeRecipe = null
+      }
+      catch (error) {
+        Pop.error(error.message)
+        logger.error(error)
+      }
+    }
     onMounted(() => {
       getAllRecipes();
+      nullified();
     });
     return {
       recipes: computed(() => AppState.recipes),
