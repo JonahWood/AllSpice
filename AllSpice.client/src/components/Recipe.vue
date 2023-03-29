@@ -56,20 +56,28 @@
                         data-bs-dismiss="modal">Close</button>
                 </div>
 
-                <!-- SECTION [EDIT MODE] footer -->
-                <div v-if="editMode" class="modal-footer d-flex justify-content-start">
-                    <form @submit.prevent="editRecipe(activeRecipe?.id)">
-                        <div class="mb-2">
-                            <label for="title">Title</label>
-                            <input v-model="editable.title" type="text" class="form-control" id="title"
-                                :placeholder="activeRecipe?.title">
-                            <label for="img">Img</label>
-                            <input v-model="editable.img" type="text" class="form-control" id="img"
-                                :placeholder="activeRecipe?.img">
+                <div class="container-fluid">
+                    <!-- SECTION [EDIT MODE] footer -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div v-if="editMode" class="modal-footer d-flex justify-content-start">
+                                <form @submit.prevent="editRecipe(activeRecipe?.id)">
+                                    <div class="mb-2">
+                                        <label for="title">Title</label>
+                                        <input v-model="editable.title" type="text" class="form-control" id="title"
+                                            :placeholder="activeRecipe?.title">
+                                        <label for="img">Img</label>
+                                        <input v-model="editable.img" type="text" class="form-control" id="img"
+                                            :placeholder="activeRecipe?.img">
+                                        <label for="instructions">Instructions</label>
+                                        <input v-model="editable.instructions" type="text" class="form-control editForm"
+                                            id="instructions" :placeholder="activeRecipe?.instructions">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Save</button>
+                                </form>
+                            </div>
                         </div>
-
-                        <button type="submit" class="btn btn-success">Save</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -178,6 +186,9 @@ export default {
             async editRecipe(recipeId) {
                 try {
                     const formData = editable.value
+                    if (formData.Img == null) {
+                        formData.Img = AppState.activeRecipe.Img
+                    }
                     await recipesService.updateRecipe(formData, recipeId)
                     AppState.editMode = false
                 }
@@ -194,6 +205,10 @@ export default {
 
 
 <style lang="scss" scoped>
+.editForm {
+    min-width: 50vw !important;
+}
+
 .ingredient-modal {
     background-color: #39399e8b;
     color: white;
