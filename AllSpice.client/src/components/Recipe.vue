@@ -40,6 +40,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- SECTION [STANDARD] footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning"
                         v-if="(account.id == activeRecipe?.creator.id) && (!editMode)"
