@@ -76,24 +76,25 @@
     </div>
 
     <!-- SECTION yet another modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ingredient">
-        Launch demo modal
-    </button>
-
-    <!-- Modal -->
     <div class="modal fade" id="ingredient" tabindex="-1" aria-labelledby="ingredientLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content ingredient-modal">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="ingredientLabel">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="ingredientLabel">Add Ingredient</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <form @submit.prevent="addIngredient(activeRecipe?.id)">
+                        <label for="name">Ingredient</label>
+                        <input v-model="ingredientData.name" type="text" class="form-control" id="name">
+                        <label for="quantity">Quantity</label>
+                        <input v-model="ingredientData.quantity" type="text" class="form-control" id="quantity">
+                        <input v-model="ingredientData.recipeId" type="text" class="form-control d-none" id="recipeId">
+                        <button type="submit" class="btn btn-light">Add</button>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
@@ -163,7 +164,10 @@ export default {
             },
             async addIngredient(recipeId) {
                 try {
-                    await ingredientsService.addIngredient(recipeId)
+                    ingredientData.value.recipeId = recipeId
+                    const formData = ingredientData.value
+                    logger.log('formdata:', formData)
+                    await ingredientsService.addIngredient(formData)
                     Pop.success('Ingredient added!')
                 }
                 catch (error) {
@@ -190,6 +194,12 @@ export default {
 
 
 <style lang="scss" scoped>
+.ingredient-modal {
+    background-color: #39399e8b;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+}
+
 .minor-headers {
     background-color: #219653;
 }

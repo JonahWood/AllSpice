@@ -11,8 +11,8 @@ async deleteIngredient(id){
     }
     
 }
-async addIngredient(recipeId){
-    const res = await api.post('api/ingredients')
+async addIngredient(formData){
+    const res = await api.post('api/ingredients', formData)
     AppState.activeIngredients.push(res.data)
 }
 }
