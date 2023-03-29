@@ -12,7 +12,10 @@
         <div class="modal-dialog recipe-modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ activeRecipe?.title }}</h1>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{ activeRecipe?.title }} <button
+                            class="btn btn-success" v-if="(activeRecipe?.creator?.id) == (account?.id)" type="button"
+                            data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#ingredient"><i
+                                class="mdi mdi-plus"></i> Ingredient</button></h1>
                     <button @click="editRecipeModeFalse()" type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
@@ -44,10 +47,10 @@
                 <!-- SECTION [STANDARD] footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning"
-                        v-if="(account.id == activeRecipe?.creator.id) && (!editMode)"
+                        v-if="(account?.id == activeRecipe?.creator?.id) && (!editMode)"
                         @click="editRecipeMode()">Edit</button>
                     <button type="button" class="btn btn-secondary"
-                        v-if="(account.id == activeRecipe?.creator.id) && (editMode)"
+                        v-if="(account?.id == activeRecipe?.creator?.id) && (editMode)"
                         @click="editRecipeMode()">Cancel</button>
                     <button @click="editRecipeModeFalse()" type="button" class="btn btn-secondary"
                         data-bs-dismiss="modal">Close</button>
@@ -55,15 +58,42 @@
 
                 <!-- SECTION [EDIT MODE] footer -->
                 <div v-if="editMode" class="modal-footer d-flex justify-content-start">
-                    <form @submit.prevent="editRecipe()">
+                    <form @submit.prevent="editRecipe(activeRecipe?.id)">
                         <div class="mb-2">
                             <label for="title">Title</label>
-                            <input required v-model="editable.title" type="text" class="form-control" id="title"
+                            <input v-model="editable.title" type="text" class="form-control" id="title"
                                 :placeholder="activeRecipe?.title">
+                            <label for="img">Img</label>
+                            <input v-model="editable.img" type="text" class="form-control" id="img"
+                                :placeholder="activeRecipe?.img">
                         </div>
 
                         <button type="submit" class="btn btn-success">Save</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION yet another modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ingredient">
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ingredient" tabindex="-1" aria-labelledby="ingredientLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ingredientLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
@@ -141,11 +171,10 @@ export default {
                     logger.error(error)
                 }
             },
-            async editRecipe() {
+            async editRecipe(recipeId) {
                 try {
                     const formData = editable.value
-                    AppState.activeRecipe = recipe
-                    await recipesService.updateRecipe(formData, recipe.id)
+                    await recipesService.updateRecipe(formData, recipeId)
                     AppState.editMode = false
                 }
                 catch (error) {
