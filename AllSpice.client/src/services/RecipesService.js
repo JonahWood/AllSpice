@@ -12,8 +12,10 @@ async getAllRecipes(){
     logger.log(recipes)
 }
 
-async createRecipe(){
-    logger.log('create recipe')
+async createRecipe(formData){
+    const res = await api.post('api/recipes', formData)
+    AppState.recipes.unshift(res.data)
+    logger.log(res.data)
 }
 
 async setActiveRecipe(id){
